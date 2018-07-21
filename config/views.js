@@ -41,7 +41,7 @@ module.exports.views = {
   getRenderFn: function () {
     // Import `consolidate`.
     var cons = require('consolidate');
-    return cons.twig;
+    return require('twig').__express;
   }
 
 };

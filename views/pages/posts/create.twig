@@ -1,0 +1,48 @@
+{% extends "../../layouts/layout.twig" %} {% block title %}{{ title }} :: PostCreatepage {% endblock %} {% block body %}
+
+<div class="container">
+  <div class="row">
+    <div class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <i class="material-icons prefix">mode_edit</i>
+          <textarea id="post_content" class="materialize-textarea" maxlength="255" data-length="255"></textarea>
+          <label for="post_content">Contenido post</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 right-align">
+          <button class="waves-effect waves-light btn" id="add-post">
+            <i class="material-icons left">library_add</i>Agregar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+  $(document).ready(function () {
+    $('textarea#post_content').characterCounter();
+    $('#add-post').click(function () {
+      $.ajax({
+        url: 'post',
+        type: 'POST',
+        data: {
+          post_content: $('#post_content').val()
+        }
+      }).done(function (response) {
+        console.log(response);
+        if (response.result) {
+          window.location.href = '/posts';
+        } else if (response.result === false) {
+          M.toast({
+            html: response.message
+          });
+        }
+      });
+    });
+  });
+
+</script>
+{% endblock %}

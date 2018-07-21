@@ -1,0 +1,62 @@
+{% extends "../layouts/layout.twig" %} {% block title %}{{ title }} :: Registerpage {% endblock %} {% block body %}
+
+<div class="valign-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col s12 m6 offset-m3">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title center-align">Register</span>
+            <form action="user/sign-up" method="POST" id="form-sign-up">
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="username" type="text" class="validate" name="username">
+                  <label for="firstname">Username</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="password" type="password" class="validate" name="password">
+                  <label for="password">Password</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="repassword" type="password" class="validate" name="repassword">
+                  <label for="repassword">Repeat password</label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-action">
+            <button class="btn waves-effect waves-light" id="btn-sign-up">Sign up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+  $(document).ready(function () {
+    $('#btn-sign-up').click(function (e) {
+      $.ajax({
+        url: $('#form-sign-up').attr('action'),
+        type: $('#form-sign-up').attr('method'),
+        data: $('#form-sign-up').serialize()
+      }).done(function (response) {
+        console.log(response);
+        if (response.result) {
+          window.location.href = '/';
+        } else if (response.result === false) {
+          M.toast({
+            html: response.message
+          });
+        }
+      });
+    });
+
+  });
+
+</script>
+{% endblock %}

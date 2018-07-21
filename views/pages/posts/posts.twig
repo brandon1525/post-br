@@ -1,0 +1,48 @@
+{% extends "../../layouts/layout.twig" %} {% block title %}{{ title }} :: Postspage {% endblock %} {% block body %}
+
+<div class="row">
+  {% for post in posts %}
+  <div class="col s12 m4 l3" post="{{post.post_id}}">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ post.post_id }} {% if session.User.user_id == post.user_id %}
+          <button class="btn-flat waves-effect right" onclick="deletePost({{ post.post_id }})">
+            <i class="material-icons red-text">delete_forever</i>
+          </button>
+          {% endif %}
+        </span>
+        <p class="truncate">{{ post.post_content }}</p>
+      </div>
+      <div class="card-action">
+        <p>Respuestas: {{ post.responses_count }}</p>
+        <p>Creado: {{ post.createdAt | date('d-m-Y') }}</p>
+        <a href="post/{{ post.post_id }}" class="waves-effect waves-light btn-small">Detalle</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %} {% block script %}
+<script>
+  $(document).ready(function () {
+
+  });
+
+  function deletePost(post_id) {
+    $.ajax({
+      url: 'post/' + post_id,
+      type: 'DELETE'
+    }).done(function (response) {
+      console.log(response);
+      if (response.result) {
+        window.location.href = '/posts';
+      } else if (response.result === false) {
+        M.toast({
+          html: response.message
+        });
+      }
+    });
+  }
+
+</script>
+{% endblock %}
